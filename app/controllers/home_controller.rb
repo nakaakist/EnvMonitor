@@ -2,8 +2,8 @@
 class HomeController < ApplicationController
   def index
     now_t = Time.now
-    acc2d = Acclog.limit(50).pluck(:aq_time, :a_x, :a_y, :a_z).transpose
-    tmp2d = Tmplog.limit(50).pluck(:aq_time, :temperature).transpose
+    acc2d = Acclog.limit(500).pluck(:aq_time, :a_x, :a_y, :a_z).transpose
+    tmp2d = Tmplog.limit(500).pluck(:aq_time, :temperature).transpose
     a_aq_times = acc2d[0]
     a_xs = acc2d[1]
     a_ys = acc2d[2]
@@ -22,12 +22,13 @@ class HomeController < ApplicationController
                 month: '%Y/%m',
                 year: '(%Y)'
             })
-      f.series(name: 'x', data: [a_aq_times, a_xs].transpose, type: 'spline')
-      f.series(name: 'y', data: [a_aq_times, a_ys].transpose, type: 'spline')
-      f.series(name: 'z', data: [a_aq_times, a_zs].transpose, type: 'spline')
+      f.series(name: 'x', data: [a_aq_times, a_xs].transpose, type: 'line')
+      f.series(name: 'y', data: [a_aq_times, a_ys].transpose, type: 'line')
+      f.series(name: 'z', data: [a_aq_times, a_zs].transpose, type: 'line')
       f.yAxis({title: {text: "G", margin: 20}})
       f.legend(align: 'right', verticalAlign: 'top', y: 75, x: -50, layout: 'vertical')
       f.tooltip(enabled: false)
+      f.plotOptions(series: {marker: {enabled: false}, states: {hover: {enabled: false}}})
       f.chart({defaultSeriesType: "column"})
     end
 
@@ -43,10 +44,11 @@ class HomeController < ApplicationController
                 month: '%Y/%m',
                 year: '(%Y)'
               })
-      f.series(name: 'T', data: [t_aq_times, tmps].transpose, type: 'spline')
+      f.series(name: 'T', data: [t_aq_times, tmps].transpose, type: 'line')
       f.yAxis({title: {text: "Degree", margin: 20}})
       f.legend(align: 'right', verticalAlign: 'top', y: 75, x: -50, layout: 'vertical')
       f.tooltip(enabled: false)
+      f.plotOptions(series: {marker: {enabled: false}, states: {hover: {enabled: false}}})
       f.chart({defaultSeriesType: "column"})
     end
   end

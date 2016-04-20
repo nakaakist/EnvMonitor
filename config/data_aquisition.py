@@ -6,7 +6,7 @@ import time
 
 conn = sqlite3.connect('../db/development.sqlite3')
 c = conn.cursor()
-for i in range(1000):
+for i in range(500):
   t = str(datetime.now())
   a_x = random.rand()
   a_y = random.rand()
@@ -17,5 +17,5 @@ for i in range(1000):
   s = (t, temperature, t, t,)
   c.execute("insert into tmplogs(aq_time, temperature, created_at, updated_at) values(?, ?, ?, ?)", s)
   conn.commit()
-  time.sleep(0.5)
+  time.sleep(0.01)
 conn.close()
